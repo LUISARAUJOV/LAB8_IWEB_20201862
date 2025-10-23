@@ -17,4 +17,6 @@ public abstract class DaoBase {
         return DriverManager.getConnection(url, user, password);
     }
 
+    public abstract void crear(Object entidad) throws SQLException;
+    public abstract void borrar(int id) throws SQLException;
 }
