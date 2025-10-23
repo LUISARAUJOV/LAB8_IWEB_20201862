@@ -1,27 +1,25 @@
 package com.example.lab8_iweb_2020186.Beans;
 
-import java.sql.Date;
-
 public class libro {
     private int id;
     private String titulo;
     private String autor;
-    private editorial editorial;
+    private int paginas;
+    private int premios;
     private genero genero;
-    private double precio;
-    private Date fechaPublicacion;
+    private editorial editorial;
 
     public libro() {
     }
 
-    public libro(int id, String titulo, String autor, editorial editorial, genero genero, double precio, Date fechaPublicacion) {
+    public libro(int id, String titulo, String autor, int paginas, int premios, genero genero, editorial editorial) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
-        this.editorial = editorial;
+        this.paginas = paginas;
+        this.premios = premios;
         this.genero = genero;
-        this.precio = precio;
-        this.fechaPublicacion = fechaPublicacion;
+        this.editorial = editorial;
     }
 
     public int getId() {
@@ -48,12 +46,20 @@ public class libro {
         this.autor = autor;
     }
 
-    public editorial getEditorial() {
-        return editorial;
+    public int getPaginas() {
+        return paginas;
     }
 
-    public void setEditorial(editorial editorial) {
-        this.editorial = editorial;
+    public void setPaginas(int paginas) {
+        this.paginas = paginas;
+    }
+
+    public int getPremios() {
+        return premios;
+    }
+
+    public void setPremios(int premios) {
+        this.premios = premios;
     }
 
     public genero getGenero() {
@@ -64,19 +70,11 @@ public class libro {
         this.genero = genero;
     }
 
-    public double getPrecio() {
-        return precio;
+    public editorial getEditorial() {
+        return editorial;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public Date getFechaPublicacion() {
-        return fechaPublicacion;
-    }
-
-    public void setFechaPublicacion(Date fechaPublicacion) {
-        this.fechaPublicacion = fechaPublicacion;
+    public void setEditorial(editorial editorial) {
+        this.editorial = editorial;
     }
 }

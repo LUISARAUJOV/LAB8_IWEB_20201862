@@ -11,12 +11,12 @@ public class LibroDao extends DaoBase {
 
     public ArrayList<libro> listar() {
         ArrayList<libro> lista = new ArrayList<>();
-        String sql = "SELECT l.idlibro, l.nombre as titulo, l.autor, l.precio, l.fechaPublicacion, " +
-                     "e.ideditorial, e.nombre as editorial_nombre, e.direccion, " +
-                     "g.idgenero, g.nombre as genero_nombre " +
+        String sql = "SELECT l.id, l.titulo, l.autor, l.paginas, l.premios, " +
+                     "e.id as editorial_id, e.nombre as editorial_nombre, " +
+                     "g.id as genero_id, g.nombre as genero_nombre " +
                      "FROM libro l " +
-                     "INNER JOIN editorial e ON l.editorial_ideditorial = e.ideditorial " +
-                     "INNER JOIN genero g ON l.genero_idgenero = g.idgenero";
+                     "INNER JOIN editorial e ON l.editorial_id = e.id " +
+                     "INNER JOIN genero g ON l.genero_id = g.id";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -24,20 +24,19 @@ public class LibroDao extends DaoBase {
 
             while (rs.next()) {
                 libro lib = new libro();
-                lib.setId(rs.getInt("idlibro"));
+                lib.setId(rs.getInt("id"));
                 lib.setTitulo(rs.getString("titulo"));
                 lib.setAutor(rs.getString("autor"));
-                lib.setPrecio(rs.getDouble("precio"));
-                lib.setFechaPublicacion(rs.getDate("fechaPublicacion"));
+                lib.setPaginas(rs.getInt("paginas"));
+                lib.setPremios(rs.getInt("premios"));
 
                 editorial ed = new editorial();
-                ed.setId(rs.getInt("ideditorial"));
+                ed.setId(rs.getInt("editorial_id"));
                 ed.setNombre(rs.getString("editorial_nombre"));
-                ed.setDireccion(rs.getString("direccion"));
                 lib.setEditorial(ed);
 
                 genero gen = new genero();
-                gen.setId(rs.getInt("idgenero"));
+                gen.setId(rs.getInt("genero_id"));
                 gen.setNombre(rs.getString("genero_nombre"));
                 lib.setGenero(gen);
 
@@ -51,7 +50,7 @@ public class LibroDao extends DaoBase {
 
     public ArrayList<editorial> listarEditoriales() {
         ArrayList<editorial> lista = new ArrayList<>();
-        String sql = "SELECT ideditorial, nombre, direccion FROM editorial";
+        String sql = "SELECT id, nombre FROM editorial";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -59,9 +58,8 @@ public class LibroDao extends DaoBase {
 
             while (rs.next()) {
                 editorial ed = new editorial();
-                ed.setId(rs.getInt("ideditorial"));
+                ed.setId(rs.getInt("id"));
                 ed.setNombre(rs.getString("nombre"));
-                ed.setDireccion(rs.getString("direccion"));
                 lista.add(ed);
             }
         } catch (SQLException e) {
@@ -72,7 +70,7 @@ public class LibroDao extends DaoBase {
 
     public ArrayList<genero> listarGeneros() {
         ArrayList<genero> lista = new ArrayList<>();
-        String sql = "SELECT idgenero, nombre FROM genero";
+        String sql = "SELECT id, nombre FROM genero";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -80,7 +78,7 @@ public class LibroDao extends DaoBase {
 
             while (rs.next()) {
                 genero gen = new genero();
-                gen.setId(rs.getInt("idgenero"));
+                gen.setId(rs.getInt("id"));
                 gen.setNombre(rs.getString("nombre"));
                 lista.add(gen);
             }
@@ -93,7 +91,7 @@ public class LibroDao extends DaoBase {
     @Override
     public void crear(Object entidad) throws SQLException {
         libro lib = (libro) entidad;
-        String sql = "INSERT INTO libro (nombre, autor, precio, fechaPublicacion, editorial_ideditorial, genero_idgenero) " +
+        String sql = "INSERT INTO libro (titulo, autor, paginas, premios, genero_id, editorial_id) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
@@ -101,10 +99,10 @@ public class LibroDao extends DaoBase {
 
             pstmt.setString(1, lib.getTitulo());
             pstmt.setString(2, lib.getAutor());
-            pstmt.setDouble(3, lib.getPrecio());
-            pstmt.setDate(4, lib.getFechaPublicacion());
-            pstmt.setInt(5, lib.getEditorial().getId());
-            pstmt.setInt(6, lib.getGenero().getId());
+            pstmt.setInt(3, lib.getPaginas());
+            pstmt.setInt(4, lib.getPremios());
+            pstmt.setInt(5, lib.getGenero().getId());
+            pstmt.setInt(6, lib.getEditorial().getId());
 
             pstmt.executeUpdate();
         }
@@ -112,23 +110,13 @@ public class LibroDao extends DaoBase {
 
     @Override
     public void borrar(int id) throws SQLException {
-        String sqlVerificar = "SELECT COUNT(*) as total FROM premio WHERE libro_idlibro = ?";
+        String sqlBorrar = "DELETE FROM libro WHERE id = ?";
         
         try (Connection conn = getConnection();
-             PreparedStatement pstmtVerificar = conn.prepareStatement(sqlVerificar)) {
-
-            pstmtVerificar.setInt(1, id);
-            ResultSet rs = pstmtVerificar.executeQuery();
-
-            if (rs.next() && rs.getInt("total") > 0) {
-                throw new SQLException("No se puede borrar el libro porque tiene premios asociados");
-            }
-
-            String sqlBorrar = "DELETE FROM libro WHERE idlibro = ?";
-            try (PreparedStatement pstmtBorrar = conn.prepareStatement(sqlBorrar)) {
-                pstmtBorrar.setInt(1, id);
-                pstmtBorrar.executeUpdate();
-            }
+             PreparedStatement pstmt = conn.prepareStatement(sqlBorrar)) {
+            
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
         }
     }
 }

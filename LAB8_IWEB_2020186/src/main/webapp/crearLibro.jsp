@@ -31,6 +31,16 @@
             </div>
 
             <div>
+                <label for="paginas">Páginas:</label>
+                <input type="number" id="paginas" name="paginas" min="1" required>
+            </div>
+
+            <div>
+                <label for="premios">Premios:</label>
+                <input type="number" id="premios" name="premios" min="0" required>
+            </div>
+
+            <div>
                 <label for="genero">Género:</label>
                 <select id="genero" name="genero" required>
                     <option value="">Seleccione un género</option>
@@ -56,22 +66,12 @@
                         if (listaEditoriales != null) {
                             for (editorial ed : listaEditoriales) {
                     %>
-                    <option value="<%= ed.getId() %>"><%= ed.getNombre() %> - <%= ed.getDireccion() %></option>
+                    <option value="<%= ed.getId() %>"><%= ed.getNombre() %></option>
                     <%
                             }
                         }
                     %>
                 </select>
-            </div>
-
-            <div>
-                <label for="precio">Precio (S/.):</label>
-                <input type="number" id="precio" name="precio" step="0.01" min="0" required>
-            </div>
-
-            <div>
-                <label for="fechaPublicacion">Fecha de Publicación:</label>
-                <input type="date" id="fechaPublicacion" name="fechaPublicacion" required>
             </div>
 
             <div>

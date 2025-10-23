@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -67,8 +66,8 @@ public class LibroServlet extends HttpServlet {
             libro lib = new libro();
             lib.setTitulo(request.getParameter("titulo"));
             lib.setAutor(request.getParameter("autor"));
-            lib.setPrecio(Double.parseDouble(request.getParameter("precio")));
-            lib.setFechaPublicacion(Date.valueOf(request.getParameter("fechaPublicacion")));
+            lib.setPaginas(Integer.parseInt(request.getParameter("paginas")));
+            lib.setPremios(Integer.parseInt(request.getParameter("premios")));
 
             editorial ed = new editorial();
             ed.setId(Integer.parseInt(request.getParameter("editorial")));

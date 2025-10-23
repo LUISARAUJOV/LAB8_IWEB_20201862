@@ -3,15 +3,13 @@ package com.example.lab8_iweb_2020186.Beans;
 public class editorial {
     private int id;
     private String nombre;
-    private String direccion;
 
     public editorial() {
     }
 
-    public editorial(int id, String nombre, String direccion) {
+    public editorial(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
-        this.direccion = direccion;
     }
 
     public int getId() {
@@ -28,14 +26,6 @@ public class editorial {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
     }
 }
 

@@ -25,11 +25,10 @@
                 <th>ID</th>
                 <th>Título</th>
                 <th>Autor</th>
+                <th>Páginas</th>
+                <th>Premios</th>
                 <th>Género</th>
                 <th>Editorial</th>
-                <th>Dirección Editorial</th>
-                <th>Precio</th>
-                <th>Fecha Publicación</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -43,11 +42,10 @@
                 <td><%= lib.getId() %></td>
                 <td><%= lib.getTitulo() %></td>
                 <td><%= lib.getAutor() %></td>
+                <td><%= lib.getPaginas() %></td>
+                <td><%= lib.getPremios() %></td>
                 <td><%= lib.getGenero().getNombre() %></td>
                 <td><%= lib.getEditorial().getNombre() %></td>
-                <td><%= lib.getEditorial().getDireccion() %></td>
-                <td>S/. <%= String.format("%.2f", lib.getPrecio()) %></td>
-                <td><%= lib.getFechaPublicacion() %></td>
                 <td>
                     <a href="LibroServlet?action=editar&id=<%= lib.getId() %>">Editar</a>
                     <a href="LibroServlet?action=borrar&id=<%= lib.getId() %>" 
@@ -59,7 +57,7 @@
                 } else {
             %>
             <tr>
-                <td colspan="9">No hay libros registrados</td>
+                <td colspan="8">No hay libros registrados</td>
             </tr>
             <%
                 }
